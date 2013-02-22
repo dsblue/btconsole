@@ -3,7 +3,7 @@
 
     <string name="app_name">btconsole</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Test change</string>
     <string name="button">Send</string>
 	<string name="hint">Text</string>
 </resources>
