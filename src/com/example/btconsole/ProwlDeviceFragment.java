@@ -52,18 +52,30 @@ public class ProwlDeviceFragment extends ListFragment {
 			mParam1 = getArguments().getString(ARG_PARAM1);
 			mParam2 = getArguments().getString(ARG_PARAM2);
 		}
-	
+		
+		ArrayAdapter<ProwlConnection> connections = new ArrayAdapter<ProwlConnection>(getActivity(),
+				android.R.layout.simple_list_item_1, android.R.id.text1,
+				Session.CONNECTIONS);
+
+		connections.add(new ProwlConnection());
+		
 		// TODO: Change Adapter to display your content
 		setListAdapter(new ArrayAdapter<ProwlConnection>(getActivity(),
 				android.R.layout.simple_list_item_1, android.R.id.text1,
 				Session.CONNECTIONS));
 		
-
-		Session.CONNECTIONS.add(new ProwlConnection());
-		
 		//setEmptyText("Click to Add a connection");
 	}
 
+	public void addConnection() {
+		
+		ArrayAdapter<ProwlConnection> list = (ArrayAdapter<ProwlConnection>)getListAdapter();
+
+		if (list != null) {
+			list.add(new ProwlConnection());
+		}
+	}
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);

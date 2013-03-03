@@ -1,6 +1,8 @@
 package com.example.btconsole;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,16 +17,33 @@ public class MainActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		// Create and display a FragmentList 
-		//FragmentManager fragmentManager = getFragmentManager();
-		//FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		
-		//ProwlDeviceFragment fragment = new ProwlDeviceFragment();
-		//fragmentTransaction.add(R.id.main_layout, fragment);
-		//fragmentTransaction.commit();
-		
-		ProwlDeviceFragment.newInstance("T1", "T2");
-		
+		// Check that the activity is using the layout version with
+        // the fragment_container FrameLayout
+        if (findViewById(R.id.fragment_container) != null) {
+
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
+            }
+    		
+    		// Create and display a FragmentList 
+    		FragmentManager fragmentManager = getFragmentManager();
+    		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+    		//ProwlDeviceFragment.newInstance("T1", "T2");
+    		ProwlDeviceFragment fragment = new ProwlDeviceFragment();
+    		
+            // In case this activity was started with special instructions from an Intent,
+            // pass the Intent's extras to the fragment as arguments
+            fragment.setArguments(getIntent().getExtras());
+    		
+    		fragmentTransaction.add(R.id.fragment_container, fragment);
+    		fragmentTransaction.commit();
+    		
+
+        }		
 		
 		// Example of a Toast notification
 		Context context = getApplicationContext();
@@ -44,11 +63,20 @@ public class MainActivity extends Activity
 
 	@Override
 	public void onFragmentInteraction(String id) {
-		
+		ProwlDeviceFragment fragment = (ProwlDeviceFragment)
+                getFragmentManager().findFragmentById(R.id.fragment_container);
+
+		fragment.addConnection();
 	}
 	
 	public void addConnection(View v){
-		Session.CONNECTIONS.add(new ProwlConnection());
+		//Session.CONNECTIONS.add(new ProwlConnection());
+		
+	     ProwlDeviceFragment fragment = (ProwlDeviceFragment)
+	                getFragmentManager().findFragmentById(R.id.fragment_container);
+
+	     fragment.addConnection();
+	     
 	}
 
 }
