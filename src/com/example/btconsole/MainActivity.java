@@ -38,45 +38,32 @@ public class MainActivity extends Activity
             // In case this activity was started with special instructions from an Intent,
             // pass the Intent's extras to the fragment as arguments
             fragment.setArguments(getIntent().getExtras());
-    		
+            
     		fragmentTransaction.add(R.id.fragment_container, fragment);
-    		fragmentTransaction.commit();
-    		
+    		fragmentTransaction.commit();		
 
         }		
-		
-		// Example of a Toast notification
-		Context context = getApplicationContext();
-		CharSequence text = "Starting!";
-		int duration = Toast.LENGTH_SHORT;
 
-		Toast toast = Toast.makeText(context, text, duration);
-		toast.show();
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	
+	//@Override
+	//public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+	//	getMenuInflater().inflate(R.menu.main, menu);
+	//	return true;
+	//}
 
 	@Override
 	public void onFragmentInteraction(String id) {
 		ProwlDeviceFragment fragment = (ProwlDeviceFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_container);
 
-		fragment.addConnection();
 	}
 	
-	public void addConnection(View v){
-		//Session.CONNECTIONS.add(new ProwlConnection());
-		
+	public void addConnection(View v){		
 	     ProwlDeviceFragment fragment = (ProwlDeviceFragment)
 	                getFragmentManager().findFragmentById(R.id.fragment_container);
 
-	     fragment.addConnection();
-	     
+	     fragment.addConnection();    
 	}
-
 }

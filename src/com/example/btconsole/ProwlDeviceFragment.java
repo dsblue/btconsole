@@ -1,9 +1,11 @@
 package com.example.btconsole;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.ListFragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -56,17 +58,20 @@ public class ProwlDeviceFragment extends ListFragment {
 		ArrayAdapter<ProwlConnection> connections = new ArrayAdapter<ProwlConnection>(getActivity(),
 				android.R.layout.simple_list_item_1, android.R.id.text1,
 				Session.CONNECTIONS);
-
-		connections.add(new ProwlConnection());
 		
-		// TODO: Change Adapter to display your content
-		setListAdapter(new ArrayAdapter<ProwlConnection>(getActivity(),
-				android.R.layout.simple_list_item_1, android.R.id.text1,
-				Session.CONNECTIONS));
+		setListAdapter(connections);
 		
-		//setEmptyText("Click to Add a connection");
+	}	
+	
+	/*
+	@Override
+	public void onActivityCreated (Bundle savedInstanceState){
+		super.onActivityCreated(savedInstanceState);
+		
+		setEmptyText("Click New Connection");
 	}
-
+	*/
+	
 	public void addConnection() {
 		
 		ArrayAdapter<ProwlConnection> list = (ArrayAdapter<ProwlConnection>)getListAdapter();
