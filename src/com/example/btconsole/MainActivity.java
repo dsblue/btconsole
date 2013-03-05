@@ -3,11 +3,9 @@ package com.example.btconsole;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
-import android.widget.Toast;
 
 public class MainActivity extends Activity 
 	implements ProwlDeviceFragment.OnFragmentInteractionListener {
@@ -64,6 +62,9 @@ public class MainActivity extends Activity
 	     ProwlDeviceFragment fragment = (ProwlDeviceFragment)
 	                getFragmentManager().findFragmentById(R.id.fragment_container);
 
-	     fragment.addConnection();    
+	     Intent intent = new Intent(this, ConfigureActivity.class);
+	     startActivity(intent);
+	     
+	     //fragment.addConnection();    
 	}
 }
