@@ -3,11 +3,12 @@ package com.example.btconsole;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * A fragment representing a list of Items.
@@ -63,14 +64,22 @@ public class ProwlDeviceFragment extends ListFragment {
 		
 	}	
 	
-	/*
+	
 	@Override
 	public void onActivityCreated (Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
 		
-		setEmptyText("Click New Connection");
+		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+	        @Override
+	        public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	            Toast.makeText(getActivity(), "On long click listener", Toast.LENGTH_LONG).show();
+	            return true;
+	        }
+	    });		
+		
+		//setEmptyText("Click New Connection");
 	}
-	*/
+	
 	
 	public void addConnection() {
 		
@@ -109,7 +118,7 @@ public class ProwlDeviceFragment extends ListFragment {
 					.onFragmentInteraction(Session.CONNECTIONS.get(position).toString());
 		}
 	}
-
+	
 
 	/**
 	 * This interface must be implemented by activities that contain this

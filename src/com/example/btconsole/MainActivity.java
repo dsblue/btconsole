@@ -80,8 +80,12 @@ public class MainActivity extends Activity
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, SerialConnection connection) {
         // User touched the dialog's positive button
-    	connection.connect();    	
-    }
+    	connection.connect();
+    	
+    	ProwlDeviceFragment fragment = (ProwlDeviceFragment) getFragmentManager().findFragmentById(R.id.fragment_container);
+    	fragment.addConnection();
+    	
+    }	
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
