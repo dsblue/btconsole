@@ -1,14 +1,14 @@
 package com.example.btconsole;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends Activity 
-	implements ProwlDeviceFragment.OnFragmentInteractionListener {
+	implements ProwlDeviceFragment.OnFragmentInteractionListener, DeviceListFragment.NoticeDialogListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +62,31 @@ public class MainActivity extends Activity
 	     ProwlDeviceFragment fragment = (ProwlDeviceFragment)
 	                getFragmentManager().findFragmentById(R.id.fragment_container);
 
-	     Intent intent = new Intent(this, ConfigureActivity.class);
-	     startActivity(intent);
+	     //Intent intent = new Intent(this, ConfigureActivity.class);
+	     //startActivity(intent);
 	     
-	     //fragment.addConnection();    
+	     showDeviceListDialog();
 	}
+
+    public void showDeviceListDialog() {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new DeviceListFragment();
+        dialog.show(getFragmentManager(), "deviceListDialog");
+    }
+
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, SerialConnection connection) {
+        // User touched the dialog's positive button
+    	connection.connect();    	
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+
+    }
+
 }

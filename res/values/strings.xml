@@ -8,5 +8,10 @@
     <string name="hint">Text</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_configure">ConfigureActivity</string>
-
+	<string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="device_select_string">Select a device</string>
+    
+    
+    
 </resources>
