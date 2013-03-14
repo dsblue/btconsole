@@ -1,14 +1,18 @@
 package com.example.btconsole;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * A fragment representing a list of Items.
@@ -19,26 +23,10 @@ import android.widget.Toast;
  */
 public class ProwlDeviceFragment extends ListFragment {
 
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
-
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
-
+	private ArrayList<ProwlConnection> mConnections = new ArrayList<ProwlConnection>();
+	private ArrayAdapter<ProwlConnection> mAdapter;
+	
 	private OnFragmentInteractionListener mListener;
-
-	// TODO: Rename and change types of parameters
-	public static ProwlDeviceFragment newInstance(String param1, String param2) {
-		ProwlDeviceFragment fragment = new ProwlDeviceFragment();
-		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
-		fragment.setArguments(args);
-		return fragment;
-	}
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,43 +39,47 @@ public class ProwlDeviceFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
-		}
-		
-		ArrayAdapter<ProwlConnection> connections = new ArrayAdapter<ProwlConnection>(getActivity(),
+		mAdapter = new ArrayAdapter<ProwlConnection>(getActivity(),
 				android.R.layout.simple_list_item_1, android.R.id.text1,
-				Session.CONNECTIONS);
+				mConnections);
 		
-		setListAdapter(connections);
+		setListAdapter(mAdapter);
 		
 	}	
-	
-	
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+	    super.onCreateContextMenu(menu, v, menuInfo);
+	    MenuInflater inflater = getActivity().getMenuInflater();
+	    inflater.inflate(R.menu.context_menu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+	    AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+	    switch (item.getItemId()) {
+	        case R.id.context_edit:
+	            return true;
+	        case R.id.context_remove:
+	        	mConnections.remove(info.position);
+	        	mAdapter.notifyDataSetChanged();
+	            return true;
+	        default:
+	            return super.onContextItemSelected(item);
+	    }
+	}
+
 	@Override
 	public void onActivityCreated (Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
 		
-		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
-	        @Override
-	        public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-	            Toast.makeText(getActivity(), "On long click listener", Toast.LENGTH_LONG).show();
-	            return true;
-	        }
-	    });		
-		
-		//setEmptyText("Click New Connection");
+	    registerForContextMenu(getListView());
+		setEmptyText("Click New Connection");
 	}
-	
-	
-	public void addConnection() {
-		
-		ArrayAdapter<ProwlConnection> list = (ArrayAdapter<ProwlConnection>)getListAdapter();
 
-		if (list != null) {
-			list.add(new ProwlConnection());
-		}
+	public void addConnection() {
+		mConnections.add(new ProwlConnection());
+		mAdapter.notifyDataSetChanged();
 	}
 	
 	@Override
@@ -114,8 +106,7 @@ public class ProwlDeviceFragment extends ListFragment {
 		if (null != mListener) {
 			// Notify the active callbacks interface (the activity, if the
 			// fragment is attached to one) that an item has been selected.
-			mListener
-					.onFragmentInteraction(Session.CONNECTIONS.get(position).toString());
+			mListener.onFragmentInteraction(mConnections.get(position).toString());
 		}
 	}
 	
