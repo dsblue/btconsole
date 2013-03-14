@@ -53,12 +53,14 @@ public class MainActivity extends Activity
 	}
 
 	@Override
-	public void onSelectDevice(String type, String address) {
-		DeviceListFragment fragment = (DeviceListFragment)
-                getFragmentManager().findFragmentById(R.id.fragment_container);
+	public void onSelectDevice(String type, String name, String address) {
+		//DeviceListFragment fragment = (DeviceListFragment)
+        //        getFragmentManager().findFragmentById(R.id.fragment_container);
 		
 		Intent intent = new Intent(this, ControlActivity.class);
-
+		intent.putExtra("type", type);
+		intent.putExtra("name", name);
+		intent.putExtra("address", address);
 	    startActivity(intent);
 
 	}
@@ -79,9 +81,9 @@ public class MainActivity extends Activity
     @Override
     public void onAddDevicePositiveClick(DialogFragment dialog, SerialConnection connection) {
 
-    	//connection.connect();
+    	// connection.connect();
     	DeviceListFragment fragment = (DeviceListFragment) getFragmentManager().findFragmentById(R.id.fragment_container);
-    	fragment.addConnection(connection.toString());
+    	fragment.addConnection(connection.getName(), connection.getAddress());
     	
     }	
 

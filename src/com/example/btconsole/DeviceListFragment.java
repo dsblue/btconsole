@@ -23,8 +23,8 @@ import android.widget.ListView;
  */
 public class DeviceListFragment extends ListFragment {
 
-	private ArrayList<ProwlConnection> mConnections = new ArrayList<ProwlConnection>();
-	private ArrayAdapter<ProwlConnection> mAdapter;
+	private ArrayList<SerialConnection> mConnections = new ArrayList<SerialConnection>();
+	private ArrayAdapter<SerialConnection> mAdapter;
 	
 	private OnDeviceListInteractionListener mListener;
 
@@ -39,7 +39,7 @@ public class DeviceListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mAdapter = new ArrayAdapter<ProwlConnection>(getActivity(),
+		mAdapter = new ArrayAdapter<SerialConnection>(getActivity(),
 				android.R.layout.simple_list_item_1, android.R.id.text1,
 				mConnections);
 		
@@ -101,12 +101,15 @@ public class DeviceListFragment extends ListFragment {
 		if (null != mListener) {
 			// Notify the active callbacks interface (the activity, if the
 			// fragment is attached to one) that an item has been selected.
-			mListener.onSelectDevice("BT", mConnections.get(position).toString());
+			mListener.onSelectDevice(
+					"BT", 
+					mConnections.get(position).getName(), 
+					mConnections.get(position).getAddress());
 		}
 	}
 	
-	public void addConnection(String name) {
-		mConnections.add(new ProwlConnection());
+	public void addConnection(String name, String address) {
+		mConnections.add(new BluetoothConnection(name, address));
 		mAdapter.notifyDataSetChanged();
 	}
 	
@@ -121,7 +124,7 @@ public class DeviceListFragment extends ListFragment {
 	 */
 	public interface OnDeviceListInteractionListener {
 		// TODO: Update argument type and name
-		public void onSelectDevice(String type, String address);
+		public void onSelectDevice(String type, String name, String address);
 	}
 
 }

@@ -8,23 +8,29 @@ import java.util.UUID;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.util.Log;
 
 public class BluetoothConnection extends SerialConnection {
 
 	private static final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
-	
+	private static final int REQUEST_ENABLE_BT = 0;
+
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothDevice mDevice;
 	
 	private ConnectThread connectThread;	
 	
 	BluetoothConnection(BluetoothAdapter adapter, BluetoothDevice device){
-		super(device.getName());
+		super(device.getName(), device.getAddress());
 		mBluetoothAdapter = adapter;
 		mDevice = device;
 	}
 	
+	BluetoothConnection(String name, String address){
+		super(name, address);
+	}
+
 	@Override
 	public boolean connect(){
 		Log.d("BT", "Starting to connect.");

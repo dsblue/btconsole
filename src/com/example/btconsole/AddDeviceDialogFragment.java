@@ -61,7 +61,7 @@ public class AddDeviceDialogFragment extends DialogFragment {
 		
 		// Build a list of USB OTG serial ports and add them to the list
 		if (true) {
-			devicesAdapter.add(new USBConnection("/dev/ttyUSB0"));
+			devicesAdapter.add(new USBConnection("USB0","/dev/ttyUSB0"));
 		}
 
 		if (devicesAdapter.isEmpty()) {

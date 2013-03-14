@@ -2,8 +2,8 @@ package com.example.btconsole;
 
 public class USBConnection extends SerialConnection {
 
-	USBConnection(String name) {
-		super(name);
+	USBConnection(String name, String address) {
+		super(name, address);
 	}
 
 	@Override

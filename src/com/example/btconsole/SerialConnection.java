@@ -6,6 +6,7 @@ import java.io.OutputStream;
 public abstract class SerialConnection {
 
 	protected String name;
+	protected String address;
 	
     protected InputStream input = null;
     protected OutputStream output = null;
@@ -13,20 +14,29 @@ public abstract class SerialConnection {
     SerialConnection() {
     }
     
-    SerialConnection(String name) {
+    SerialConnection(String name, String address) {
     	this.name = name;
+    	this.address = address;
     }
     
-    InputStream getInputStream() {
+    public InputStream getInputStream() {
     	return input;
     }
     
-    OutputStream getOutputStream() {
+    public OutputStream getOutputStream() {
     	return output;
     }
     
     public abstract boolean connect();
     public abstract void disconnect();
+    
+    public String getName() {
+    	return name;
+    }
+    
+    public String getAddress() {
+    	return address;
+    }
     
 	@Override
 	public String toString() {
