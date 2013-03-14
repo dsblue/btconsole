@@ -1,101 +1,87 @@
 package com.example.btconsole;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.app.ListFragment;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-public class DeviceListFragment extends DialogFragment {
+/**
+ * A fragment representing a list of Items.
+ * <p />
+ * <p />
+ * Activities containing this fragment MUST implement the {@link Callbacks}
+ * interface.
+ */
+public class DeviceListFragment extends ListFragment {
 
-	private static final int REQUEST_ENABLE_BT = 0;
-
-	private NoticeDialogListener mListener;
-
-	private ArrayAdapter<SerialConnection> devicesAdapter;
+	private ArrayList<ProwlConnection> mConnections = new ArrayList<ProwlConnection>();
+	private ArrayAdapter<ProwlConnection> mAdapter;
 	
-	private BluetoothAdapter mBluetoothAdapter;
-	
+	private OnDeviceListInteractionListener mListener;
+
+	/**
+	 * Mandatory empty constructor for the fragment manager to instantiate the
+	 * fragment (e.g. upon screen orientation changes).
+	 */
 	public DeviceListFragment() {
-		// Required empty public constructor
 	}
 
 	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// Use the Builder class for convenient dialog construction
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		
-		devicesAdapter = new ArrayAdapter<SerialConnection>(getActivity(),
-				android.R.layout.simple_list_item_1, 
-				android.R.id.text1, 
-				new ArrayList<SerialConnection>()) ;
-	
-		// Build the list of Bluetooth Devices and allow the user to select one
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		if (mBluetoothAdapter == null) {
-		    // Device does not support Bluetooth
-		}
-		
-		if (!mBluetoothAdapter.isEnabled()) {
-		    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-		    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-		}
-		
-		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-		// If there are paired devices
-		if (pairedDevices.size() > 0) {
-		    // Loop through paired devices
-		    for (BluetoothDevice device : pairedDevices) {
-		    	devicesAdapter.add(new BluetoothConnection(mBluetoothAdapter, device));
-		    }
-		} 			
-		
-		// Build a list of USB OTG serial ports and add them to the list
-		if (true) {
-			devicesAdapter.add(new USBConnection("/dev/ttyUSB0"));
-		}
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-		if (devicesAdapter.isEmpty()) {
-			// No devices...
-			builder.setMessage("No Devices Found!")
-				.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-					}
-				});
-			return builder.create();
-		}
+		mAdapter = new ArrayAdapter<ProwlConnection>(getActivity(),
+				android.R.layout.simple_list_item_1, android.R.id.text1,
+				mConnections);
 		
-		builder.setTitle(R.string.device_select_string)
-				.setAdapter(devicesAdapter, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						mListener.onDialogPositiveClick(DeviceListFragment.this, devicesAdapter.getItem(id));
-					}
-				})
-				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// User cancelled the dialog
-						mListener.onDialogNegativeClick(DeviceListFragment.this);
-					}
-				});
+		setListAdapter(mAdapter);
 		
-		// Create the AlertDialog object and return it
-		return builder.create();
+	}	
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+	    super.onCreateContextMenu(menu, v, menuInfo);
+	    MenuInflater inflater = getActivity().getMenuInflater();
+	    inflater.inflate(R.menu.context_menu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+	    AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+	    switch (item.getItemId()) {
+	        case R.id.context_edit:
+	            return true;
+	        case R.id.context_remove:
+	        	mConnections.remove(info.position);
+	        	mAdapter.notifyDataSetChanged();
+	            return true;
+	        default:
+	            return super.onContextItemSelected(item);
+	    }
+	}
+
+	@Override
+	public void onActivityCreated (Bundle savedInstanceState){
+		super.onActivityCreated(savedInstanceState);
+		
+	    registerForContextMenu(getListView());
+		setEmptyText("Click New Connection");
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (NoticeDialogListener) activity;
+			mListener = (OnDeviceListInteractionListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnFragmentInteractionListener");
@@ -108,12 +94,34 @@ public class DeviceListFragment extends DialogFragment {
 		mListener = null;
 	}
 
-	/* The activity that creates an instance of this dialog fragment must
-	 * implement this interface in order to receive event callbacks.
-	 * Each method passes the DialogFragment in case the host needs to query it. */
-	public interface NoticeDialogListener {
-		public void onDialogPositiveClick(DialogFragment dialog, SerialConnection connection );
-		public void onDialogNegativeClick(DialogFragment dialog);
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+
+		if (null != mListener) {
+			// Notify the active callbacks interface (the activity, if the
+			// fragment is attached to one) that an item has been selected.
+			mListener.onSelectDevice("BT", mConnections.get(position).toString());
+		}
+	}
+	
+	public void addConnection(String name) {
+		mConnections.add(new ProwlConnection());
+		mAdapter.notifyDataSetChanged();
+	}
+	
+	/**
+	 * This interface must be implemented by activities that contain this
+	 * fragment to allow an interaction in this fragment to be communicated to
+	 * the activity and potentially other fragments contained in that activity.
+	 * <p>
+	 * See the Android Training lesson <a href=
+	 * "http://developer.android.com/training/basics/fragments/communicating.html"
+	 * >Communicating with Other Fragments</a> for more information.
+	 */
+	public interface OnDeviceListInteractionListener {
+		// TODO: Update argument type and name
+		public void onSelectDevice(String type, String address);
 	}
 
 }

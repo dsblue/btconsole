@@ -1,0 +1,46 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/table1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ControlFragment" >
+
+    <TableRow 
+        android:id="@+id/tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+         
+	    <ToggleButton 
+	        android:id="@+id/connect_button"
+	        android:layout_span="2"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textOff="@string/start_string"
+	        android:textOn="@string/stop_string"
+	        android:onClick="clickConnect"/>
+	</TableRow>
+    <TableRow 
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+ 
+        <TextView
+            android:id="@+id/textView2"
+            android:text="Collect Data" />
+        <CheckBox
+            android:id="@+id/dataCollect" />
+
+	</TableRow>
+	<TableRow 
+		android:id="@+id/tableRow3"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="5dip" >
+        
+        <TextView
+			android:id="@+id/logView"
+			android:textIsSelectable="true"/>
+ 	</TableRow>
+</TableLayout>

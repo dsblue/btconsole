@@ -8,9 +8,18 @@
     <string name="hint">Text</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_configure">ConfigureActivity</string>
-	<string name="ok">OK</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="device_select_string">Select a device</string>
+    <string name="title_activity_control">ControlActivity</string>
+    
+    <!--  Control Panel -->
+    <string name="start_string">Start</string>
+    <string name="stop_string">Stop</string>
+    <string name="fwupdate_string">Update Firmware</string>
+    <string name="apply_string">Apply Changes</string>
+    <string name="data_string">Collect Data</string>
+    <string name="log_string">Log</string>
     
     
     

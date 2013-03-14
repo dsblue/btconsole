@@ -7,8 +7,9 @@
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="17" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +29,16 @@
             android:name="com.example.btconsole.ConfigureActivity"
             android:label="@string/title_activity_configure" >
         </activity>
+        <activity
+            android:name="com.example.btconsole.ControlActivity"
+            android:label="@string/title_activity_control" >
+        </activity>
+
+        <service
+            android:name="com.example.btconsole.CommService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

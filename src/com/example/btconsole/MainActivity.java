@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 
 public class MainActivity extends Activity 
-	implements ProwlDeviceFragment.OnFragmentInteractionListener, DeviceListFragment.NoticeDialogListener {
+	implements DeviceListFragment.OnDeviceListInteractionListener, AddDeviceDialogFragment.AddDeviceDialogListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,7 @@ public class MainActivity extends Activity
     		FragmentManager fragmentManager = getFragmentManager();
     		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-    		//ProwlDeviceFragment.newInstance("T1", "T2");
-    		ProwlDeviceFragment fragment = new ProwlDeviceFragment();
+    		DeviceListFragment fragment = new DeviceListFragment();
     		
             // In case this activity was started with special instructions from an Intent,
             // pass the Intent's extras to the fragment as arguments
@@ -44,52 +45,49 @@ public class MainActivity extends Activity
 
 	}
 	
-	//@Override
-	//public boolean onCreateOptionsMenu(Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-	//	getMenuInflater().inflate(R.menu.main, menu);
-	//	return true;
-	//}
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
 
 	@Override
-	public void onFragmentInteraction(String id) {
-		ProwlDeviceFragment fragment = (ProwlDeviceFragment)
+	public void onSelectDevice(String type, String address) {
+		DeviceListFragment fragment = (DeviceListFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_container);
+		
+		Intent intent = new Intent(this, ControlActivity.class);
+
+	    startActivity(intent);
 
 	}
 	
 	public void addConnection(View v){		
-	     ProwlDeviceFragment fragment = (ProwlDeviceFragment)
+	     DeviceListFragment fragment = (DeviceListFragment)
 	                getFragmentManager().findFragmentById(R.id.fragment_container);
-
-	     //Intent intent = new Intent(this, ConfigureActivity.class);
-	     //startActivity(intent);
 	     
 	     showDeviceListDialog();
 	}
 
     public void showDeviceListDialog() {
         // Create an instance of the dialog fragment and show it
-        DialogFragment dialog = new DeviceListFragment();
+        DialogFragment dialog = new AddDeviceDialogFragment();
         dialog.show(getFragmentManager(), "deviceListDialog");
     }
 
-    // The dialog fragment receives a reference to this Activity through the
-    // Fragment.onAttach() callback, which it uses to call the following methods
-    // defined by the NoticeDialogFragment.NoticeDialogListener interface
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog, SerialConnection connection) {
-        // User touched the dialog's positive button
-    	connection.connect();
-    	
-    	ProwlDeviceFragment fragment = (ProwlDeviceFragment) getFragmentManager().findFragmentById(R.id.fragment_container);
-    	fragment.addConnection();
+    public void onAddDevicePositiveClick(DialogFragment dialog, SerialConnection connection) {
+
+    	//connection.connect();
+    	DeviceListFragment fragment = (DeviceListFragment) getFragmentManager().findFragmentById(R.id.fragment_container);
+    	fragment.addConnection(connection.toString());
     	
     }	
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        // User touched the dialog's negative button
+    public void onAddDeviceNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's cancel button
 
     }
 
