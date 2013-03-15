@@ -17,5 +17,17 @@ public class USBConnection extends SerialConnection {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void sendStartString() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendStopString() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ToggleButton;
 
 import com.example.btconsole.ControlFragment.OnControlFragmentInteractionListener;
 
@@ -59,7 +60,12 @@ public class ControlActivity extends Activity
 	}
 	
 	public void clickConnect(View v) {
-		Log.d("Control", "Click button\n");
+		ToggleButton button = (ToggleButton) findViewById(R.id.connect_button);
+		if (button.isChecked()) {
+			connection.sendStartString();
+		} else {
+			connection.sendStopString();
+		}				
 	}
 
 	/*

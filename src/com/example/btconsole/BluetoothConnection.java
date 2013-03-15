@@ -27,6 +27,8 @@ public class BluetoothConnection extends SerialConnection implements Handler.Cal
 	
 	final Handler mHandler = new Handler(this);
 	
+	private ConnectedThread connected;
+	
 	BluetoothConnection(BluetoothAdapter adapter, BluetoothDevice device){
 		super(device.getName(), device.getAddress());
 		mBluetoothAdapter = adapter;
@@ -101,8 +103,8 @@ public class BluetoothConnection extends SerialConnection implements Handler.Cal
 	        // Do work to manage the connection (in a separate thread)
 	        //manageConnectedSocket(mmSocket);
 	        
-	        new ConnectedThread(mmSocket).start();
-	        
+	        connected = new ConnectedThread(mmSocket);
+	        connected.start();
 	    }
 	 
 	    /** Will cancel an in-progress connection, and close the socket */
@@ -186,6 +188,17 @@ public class BluetoothConnection extends SerialConnection implements Handler.Cal
 		}
 		
 		return true;
+	}
+
+	@Override
+	public void sendStartString() {
+		connected.write(new String("Start\n\r").getBytes());
+	}
+
+	@Override
+	public void sendStopString() {
+		// TODO Auto-generated method stub
+		connected.write(new String("Stop\n\r").getBytes());
 	}
 	
 	
