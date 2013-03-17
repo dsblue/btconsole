@@ -17,8 +17,6 @@ public class TCPIPServerThread extends Thread {
 	int port;
 	private ServerSocket serverSocket;
 	private Handler parent;
-	private OutputStream os;
-	private InputStream is;
 	private Socket sock;
 
 	public TCPIPServerThread(Handler parent, int port) {
@@ -39,7 +37,7 @@ public class TCPIPServerThread extends Thread {
 
 			sock = serverSocket.accept(); // blocks until connection opened
 			Log.i("TCPIP", "Accepted connection : " + sock);
-			
+			Log.i("TCPIP", "Accepted connection : " + serverSocket);
 			while (true) {
 				// Read from the InputStream
 				bytes = sock.getInputStream().read(buffer);

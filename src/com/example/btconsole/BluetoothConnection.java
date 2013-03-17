@@ -166,7 +166,6 @@ public class BluetoothConnection extends SerialConnection {
 		connected.write(bytes, len);
 	}
 	
-	
 	@Override
 	public void sendStartString() {
 		connected.write(COT_start.getBytes(),COT_start.length());
@@ -174,7 +173,6 @@ public class BluetoothConnection extends SerialConnection {
 
 	@Override
 	public void sendStopString() {
-		// TODO Auto-generated method stub
 		connected.write(COT_stop.getBytes(), COT_stop.length());
 	}
 	
