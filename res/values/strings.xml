@@ -20,7 +20,8 @@
     <string name="apply_string">Apply Changes</string>
     <string name="data_string">Collect Data</string>
     <string name="log_string">Log</string>
-    
-    
+    <string name="collectdata">Collect Data</string>
+    <string name="startipserver_string">Start IP Server</string>
+    <string name="stopipserver_string">Stop IP Server</string>
     
 </resources>

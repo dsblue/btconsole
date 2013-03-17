@@ -192,7 +192,7 @@ public class BluetoothConnection extends SerialConnection implements Handler.Cal
 
 	@Override
 	public void sendStartString() {
-		connected.write(new String("Start\n\r").getBytes());
+		connected.write(new String("<?xml ><event type=\"\" />\n\r").getBytes());
 	}
 
 	@Override

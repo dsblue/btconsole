@@ -5,42 +5,82 @@
     android:layout_height="match_parent"
     tools:context=".ControlFragment" >
 
-    <TableRow 
-        android:id="@+id/tableRow1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dip" >
-         
-	    <ToggleButton 
-	        android:id="@+id/connect_button"
-	        android:layout_span="2"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:textOff="@string/start_string"
-	        android:textOn="@string/stop_string"
-	        android:onClick="clickConnect"/>
-	</TableRow>
-    <TableRow 
-        android:id="@+id/tableRow2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dip" >
- 
-        <TextView
-            android:id="@+id/textView2"
-            android:text="Collect Data" />
-        <CheckBox
-            android:id="@+id/dataCollect" />
+    <TableRow>
 
-	</TableRow>
-	<TableRow 
-		android:id="@+id/tableRow3"
-        android:layout_width="wrap_content"
+        <ToggleButton
+            android:id="@+id/connect_button"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="clickConnect"
+            android:textOff="@string/start_string"
+            android:textOn="@string/stop_string" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="5dip" >
-        
+
         <TextView
-			android:id="@+id/logView"
-			android:textIsSelectable="true"/>
- 	</TableRow>
+            android:id="@+id/textView2"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/collectdata" />
+
+        <CheckBox
+            android:id="@+id/dataCollect"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dip" >
+
+        <ToggleButton
+            android:id="@+id/ipserver_button"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="clickStartIPServer"
+            android:textOff="@string/startipserver_string"
+            android:textOn="@string/stopipserver_string" />
+
+        <TextView
+            android:id="@+id/ipaddress"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textIsSelectable="true" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dip" >
+
+        <ScrollView
+            android:id="@+id/ScrollView01"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/DownloadData" >
+
+            <TextView
+                android:id="@+id/logView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textIsSelectable="true" />
+        </ScrollView>
+    </TableRow>
+
+    <ScrollView>
+    </ScrollView>
+
 </TableLayout>
