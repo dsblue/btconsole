@@ -3,18 +3,15 @@ package com.example.btconsole;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.Intent;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
-public class BluetoothConnection extends SerialConnection implements Handler.Callback{
+public class BluetoothConnection extends SerialConnection {
 	
 	private static final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 	private static final int REQUEST_ENABLE_BT = 0;
@@ -24,19 +21,17 @@ public class BluetoothConnection extends SerialConnection implements Handler.Cal
 	private BluetoothDevice mDevice;
 	
 	private ConnectThread connectThread;	
-	
-	final Handler mHandler = new Handler(this);
-	
+		
 	private ConnectedThread connected;
 	
-	BluetoothConnection(BluetoothAdapter adapter, BluetoothDevice device){
-		super(device.getName(), device.getAddress());
+	BluetoothConnection(Handler parentThread, BluetoothAdapter adapter, BluetoothDevice device){
+		super(parentThread, device.getName(), device.getAddress());
 		mBluetoothAdapter = adapter;
 		mDevice = device;
 	}
 	
 	BluetoothConnection(String name, String address){
-		super(name, address);
+		super(null, name, address);
 	}
 
 	@Override
@@ -146,7 +141,7 @@ public class BluetoothConnection extends SerialConnection implements Handler.Cal
 	                // Read from the InputStream
 	                bytes = mmInStream.read(buffer);
 	                // Send the obtained bytes to the UI activity
-	                mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
+	                parentThread.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
 	                        .sendToTarget();
 	            } catch (IOException e) {
 	                break;
@@ -170,35 +165,14 @@ public class BluetoothConnection extends SerialConnection implements Handler.Cal
 	}
 
 	@Override
-	public boolean handleMessage(Message msg) {
-		byte[] buffer;
-		int len;
-		
-		if (msg.what == MESSAGE_READ) {
-			buffer = (byte[])msg.obj;
-			len = msg.arg1;
-			
-			buffer[len] = 0;
-			try {
-				Log.d("BT",new String(buffer, "UTF-8").substring(0, len));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		return true;
-	}
-
-	@Override
 	public void sendStartString() {
-		connected.write(new String("<?xml ><event type=\"\" />\n\r").getBytes());
+		connected.write(COT_start.getBytes());
 	}
 
 	@Override
 	public void sendStopString() {
 		// TODO Auto-generated method stub
-		connected.write(new String("Stop\n\r").getBytes());
+		connected.write(COT_stop.getBytes());
 	}
 	
 	

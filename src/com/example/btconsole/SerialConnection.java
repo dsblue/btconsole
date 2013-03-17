@@ -3,18 +3,36 @@ package com.example.btconsole;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.os.Handler;
+
 public abstract class SerialConnection {
 
+	protected final String COT_start = new String("<?xml version='1.0' standalone='yes' ?><event type='t-x-a-e'></event>\n");
+	protected final String COT_stop = new String("<?xml version='1.0' standalone='yes' ?><event type='t-x-a-d'></event>\n");
+	protected final String COT_status = new String("<?xml version='1.0' standalone='yes' ?><event type='t-x-q'></event>\n");
+	protected final String COT_info = new String("<?xml version='1.0' standalone='yes' ?><event type='t-x-q-i'></event>\n");
+	protected final String COT_debug = new String("<?xml version='1.0' standalone='yes' ?><event type='NOT COT'></event>\n");
+	
+	protected final String COT_config_head = new String("<?xml version='1.0' standalone='yes' ?><event type='   '>\n");
+	protected final String COT_config_tail = new String("</event>\n");
+		
 	protected String name;
 	protected String address;
 	
-    protected InputStream input = null;
+	/*
+	 * Maintain a link to the parent thread's handler so that messages can
+	 * be sent back if necessary (including from new thread created by this class)
+	 */
+	Handler parentThread;
+    
+	protected InputStream input = null;
     protected OutputStream output = null;
    
     SerialConnection() {
     }
     
-    SerialConnection(String name, String address) {
+    SerialConnection(Handler thread, String name, String address) {
+    	this.parentThread = thread;
     	this.name = name;
     	this.address = address;
     }

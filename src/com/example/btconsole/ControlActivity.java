@@ -2,6 +2,7 @@ package com.example.btconsole;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -13,6 +14,8 @@ import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -22,12 +25,21 @@ import android.widget.ToggleButton;
 import com.example.btconsole.ControlFragment.OnControlFragmentInteractionListener;
 
 public class ControlActivity extends Activity 
-implements OnControlFragmentInteractionListener {
+implements OnControlFragmentInteractionListener, Handler.Callback{
 
+	/*
+	 * Set a list of constants that are used to identify messages
+	 */
 	private static final int REQUEST_ENABLE_BT = 0;
-	private boolean isConnected = false;
-
-	private SerialConnection	connection;
+	private static final int BT_DATA_READ = 1;
+	
+	/* 
+	 * Create a Handler in this thread so that other threads can send messages back
+	 * The messages are handled by the method: handleMessage(Message msg) ;
+	 */
+	final Handler controlActivityHandler = new Handler(this);
+	
+	private SerialConnection connection;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +67,10 @@ implements OnControlFragmentInteractionListener {
 			BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(extras.getString("address"));
 
 			// Start a thread for handling the bluetooth connection
-			connection = new BluetoothConnection(mBluetoothAdapter, device);
+			connection = new BluetoothConnection(controlActivityHandler, mBluetoothAdapter, device);
 
 			connection.connect();
-
-			isConnected = true;		
+			
 		} 
 	}
 
@@ -81,7 +92,6 @@ implements OnControlFragmentInteractionListener {
 
 	private boolean startIPServer(){
 
-
 		TCPIPServer.getInstance(5005);
 
 		return true;		
@@ -93,10 +103,12 @@ implements OnControlFragmentInteractionListener {
 
 	}
 
-	public void clickConnect(View v) {
-		ToggleButton button = (ToggleButton) findViewById(R.id.connect_button);
+	public void clickStart(View v) {
+		ToggleButton button = (ToggleButton) findViewById(R.id.start_button);
 		if (button.isChecked()) {
 			connection.sendStartString();
+			/*
+			*/
 		} else {
 			connection.sendStopString();
 		}				
@@ -124,6 +136,41 @@ implements OnControlFragmentInteractionListener {
 		} else {
 			ipaddress.setText("Not Serving Data");
 		}				
+	}
+
+	@Override
+	public boolean handleMessage(Message msg) {
+		byte[] buffer;
+		int len;
+		
+		if (msg.what == BT_DATA_READ) {
+			buffer = (byte[])msg.obj;
+			len = msg.arg1;
+			
+			buffer[len] = 0;
+			try {
+				Log.d("BT",new String(buffer, "UTF-8").substring(0, len));
+				
+				/*
+				 * Update the log window on the control view
+				 */
+				TextView log = (TextView) findViewById(R.id.logView);
+				// TODO: Is there a more efficient way to do this?
+				log.append(new String(buffer, "UTF-8").substring(0, len));
+				
+				/*
+				 * If there is an open TCP IP connection to a remote client, then pass the raw data along
+				 */
+				TCPIPServer.getInstance(5005).send(buffer);
+
+				
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return true;
 	}
 
 	/*

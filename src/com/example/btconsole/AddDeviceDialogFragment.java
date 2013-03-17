@@ -55,7 +55,7 @@ public class AddDeviceDialogFragment extends DialogFragment {
 		if (pairedDevices.size() > 0) {
 		    // Loop through paired devices
 		    for (BluetoothDevice device : pairedDevices) {
-		    	devicesAdapter.add(new BluetoothConnection(mBluetoothAdapter, device));
+		    	devicesAdapter.add(new BluetoothConnection(device.getName(), device.getAddress()));
 		    }
 		} 			
 		

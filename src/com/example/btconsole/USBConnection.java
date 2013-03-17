@@ -3,7 +3,7 @@ package com.example.btconsole;
 public class USBConnection extends SerialConnection {
 
 	USBConnection(String name, String address) {
-		super(name, address);
+		super(null, name, address);
 	}
 
 	@Override

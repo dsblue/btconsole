@@ -1,5 +1,9 @@
 package com.example.btconsole;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
+import android.util.Log;
 
 public class TCPIPServer {
 
@@ -21,9 +25,16 @@ public class TCPIPServer {
 
 		return instance;
 	}
-	
-	//public InputStream getInputStream() {
-		
-	//}
-	
+
+	public void send(byte [] mybytearray){
+		OutputStream os;
+		try {
+			os = thread.getOutputStream();
+			Log.i("************", "Sending...");
+			os.write(mybytearray,0,mybytearray.length);
+			os.flush();			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
