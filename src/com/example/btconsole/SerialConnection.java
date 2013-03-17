@@ -63,7 +63,7 @@ public abstract class SerialConnection {
 		else 
 			return "Unnammed";
 	}
-	
+	public abstract void write(byte [] bytes, int len);
 	public abstract void sendStartString();
 	public abstract void sendStopString();
 }

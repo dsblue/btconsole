@@ -15,7 +15,7 @@ public class BluetoothConnection extends SerialConnection {
 	
 	private static final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 	private static final int REQUEST_ENABLE_BT = 0;
-	private static final int MESSAGE_READ = 1;
+	private static final int BT_DATA_READ = 1;
 	
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothDevice mDevice;
@@ -94,10 +94,7 @@ public class BluetoothConnection extends SerialConnection {
 	            } catch (IOException closeException) { }
 	            return;
 	        }
-	 
-	        // Do work to manage the connection (in a separate thread)
-	        //manageConnectedSocket(mmSocket);
-	        
+	         
 	        connected = new ConnectedThread(mmSocket);
 	        connected.start();
 	    }
@@ -141,7 +138,7 @@ public class BluetoothConnection extends SerialConnection {
 	                // Read from the InputStream
 	                bytes = mmInStream.read(buffer);
 	                // Send the obtained bytes to the UI activity
-	                parentThread.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
+	                parentThread.obtainMessage(BT_DATA_READ, bytes, -1, buffer)
 	                        .sendToTarget();
 	            } catch (IOException e) {
 	                break;
@@ -150,9 +147,9 @@ public class BluetoothConnection extends SerialConnection {
 	    }
 	 
 	    /* Call this from the main activity to send data to the remote device */
-	    public void write(byte[] bytes) {
+	    public void write(byte[] bytes, int len) {
 	        try {
-	            mmOutStream.write(bytes);
+	            mmOutStream.write(bytes,0,len);
 	        } catch (IOException e) { }
 	    }
 	 
@@ -165,14 +162,20 @@ public class BluetoothConnection extends SerialConnection {
 	}
 
 	@Override
+	public void write(byte [] bytes, int len) {
+		connected.write(bytes, len);
+	}
+	
+	
+	@Override
 	public void sendStartString() {
-		connected.write(COT_start.getBytes());
+		connected.write(COT_start.getBytes(),COT_start.length());
 	}
 
 	@Override
 	public void sendStopString() {
 		// TODO Auto-generated method stub
-		connected.write(COT_stop.getBytes());
+		connected.write(COT_stop.getBytes(), COT_stop.length());
 	}
 	
 	

@@ -30,8 +30,8 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 	/*
 	 * Set a list of constants that are used to identify messages
 	 */
-	private static final int REQUEST_ENABLE_BT = 0;
 	private static final int BT_DATA_READ = 1;
+	private static final int TCPIP_DATA_READ = 2;
 	
 	/* 
 	 * Create a Handler in this thread so that other threads can send messages back
@@ -55,12 +55,6 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 			BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 			if (mBluetoothAdapter == null) {
 				// Device does not support Bluetooth
-				//return;
-			}
-
-			if (!mBluetoothAdapter.isEnabled()) {
-				//Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-				//startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 				//return;
 			}
 
@@ -92,8 +86,7 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 
 	private boolean startIPServer(){
 
-		TCPIPServer.getInstance(5005);
-
+		TCPIPServer.getInstance(controlActivityHandler, 5005);
 		return true;		
 	}
 
@@ -107,8 +100,6 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 		ToggleButton button = (ToggleButton) findViewById(R.id.start_button);
 		if (button.isChecked()) {
 			connection.sendStartString();
-			/*
-			*/
 		} else {
 			connection.sendStopString();
 		}				
@@ -134,6 +125,7 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 				button.setChecked(false);
 			}
 		} else {
+			TCPIPServer.getInstance(controlActivityHandler, 5005).close();
 			ipaddress.setText("Not Serving Data");
 		}				
 	}
@@ -144,12 +136,11 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 		int len;
 		
 		if (msg.what == BT_DATA_READ) {
-			buffer = (byte[])msg.obj;
-			len = msg.arg1;
+			buffer 	= (byte[])msg.obj;
+			len 	= msg.arg1;
 			
-			buffer[len] = 0;
 			try {
-				Log.d("BT",new String(buffer, "UTF-8").substring(0, len));
+				//Log.d("BT",new String(buffer, "UTF-8").substring(0, len));
 				
 				/*
 				 * Update the log window on the control view
@@ -161,25 +152,25 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 				/*
 				 * If there is an open TCP IP connection to a remote client, then pass the raw data along
 				 */
-				TCPIPServer.getInstance(5005).send(buffer);
-
+				ToggleButton button = (ToggleButton) findViewById(R.id.ipserver_button);
+				if (button.isChecked()) {
+					TCPIPServer.getInstance(controlActivityHandler, 5005).send(buffer,len);
+				}
 				
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else if (msg.what == TCPIP_DATA_READ) {
+			
+			/*
+			 * Pass the TCP IP data along to the Serial connection here...
+			 */
+			connection.write((byte[])msg.obj, msg.arg1);
+
 		}
 		
 		return true;
 	}
-
-	/*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.control, menu);
-		return true;
-	}
-	 */
 
 }

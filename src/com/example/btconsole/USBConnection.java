@@ -29,5 +29,11 @@ public class USBConnection extends SerialConnection {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void write(byte[] bytes, int len) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

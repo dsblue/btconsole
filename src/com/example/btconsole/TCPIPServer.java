@@ -3,6 +3,7 @@ package com.example.btconsole;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import android.os.Handler;
 import android.util.Log;
 
 public class TCPIPServer {
@@ -14,27 +15,34 @@ public class TCPIPServer {
 	
 	private static int instanceCount = 0;	
 
-	public static TCPIPServer getInstance(int port){
+	public static TCPIPServer getInstance(Handler parent, int port){
 
 		if (instanceCount == 0) {
+			
 			instanceCount++;
-			thread = new TCPIPServerThread(port);
-
+			
+			thread = new TCPIPServerThread(parent, port);
 			thread.start();
 		}
 
 		return instance;
 	}
 
-	public void send(byte [] mybytearray){
-		OutputStream os;
+	public void send(byte [] mybytearray, int length){
+		OutputStream output;
 		try {
-			os = thread.getOutputStream();
-			Log.i("************", "Sending...");
-			os.write(mybytearray,0,mybytearray.length);
-			os.flush();			
+			output = thread.getOutputStream();
+			if (output != null) {
+				output.write(mybytearray,0,length);
+				output.flush();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void close() {
+		thread.close();
+		instanceCount = 0;
 	}
 }
