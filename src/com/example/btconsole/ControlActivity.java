@@ -13,8 +13,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -85,7 +83,7 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 				(ip >> 8 & 0xff),
 				(ip >> 16 & 0xff),
 				(ip >> 24 & 0xff));
-		*/
+		 */
 		// Then see what the cell IP address is
 		try {
 			for (Enumeration<NetworkInterface> en =	NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
@@ -125,6 +123,19 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 			connection.sendStopString();
 		}				
 	}
+
+	public void clickInfo(View v) {
+		connection.sendInfoString();
+	}
+
+	public void clickStatus(View v) {
+		connection.sendStatusString();
+	}
+
+	public void clickDebug(View v) {
+		connection.sendDebugString();
+	}
+
 
 	public void clickStartIPServer(View v) {
 		ToggleButton button = (ToggleButton) findViewById(R.id.ipserver_button);

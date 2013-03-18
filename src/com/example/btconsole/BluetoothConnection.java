@@ -3,6 +3,7 @@ package com.example.btconsole;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
@@ -161,6 +162,13 @@ public class BluetoothConnection extends SerialConnection {
 	    }
 	}
 
+	private void writeString(String str){
+		try {
+			connected.write(str.getBytes("UTF-8"),str.getBytes("UTF-8").length);
+		} catch (UnsupportedEncodingException e) {
+		}
+	}
+	
 	@Override
 	public void write(byte [] bytes, int len) {
 		connected.write(bytes, len);
@@ -168,12 +176,27 @@ public class BluetoothConnection extends SerialConnection {
 	
 	@Override
 	public void sendStartString() {
-		connected.write(COT_start.getBytes(),COT_start.length());
+		writeString(COT_start);
 	}
 
 	@Override
 	public void sendStopString() {
-		connected.write(COT_stop.getBytes(), COT_stop.length());
+		writeString(COT_stop);
+	}
+
+	@Override
+	public void sendInfoString() {
+		writeString(COT_info);
+	}
+
+	@Override
+	public void sendStatusString() {
+		writeString(COT_status);
+	}
+
+	@Override
+	public void sendDebugString() {
+		writeString(COT_debug);
 	}
 	
 	

@@ -15,7 +15,7 @@ public abstract class SerialConnection {
 	
 	protected final String COT_config_head = new String("<?xml version='1.0' standalone='yes' ?><event type='   '>\n");
 	protected final String COT_config_tail = new String("</event>\n");
-		
+	
 	protected String name;
 	protected String address;
 	
@@ -66,4 +66,7 @@ public abstract class SerialConnection {
 	public abstract void write(byte [] bytes, int len);
 	public abstract void sendStartString();
 	public abstract void sendStopString();
+	public abstract void sendInfoString();
+	public abstract void sendStatusString();
+	public abstract void sendDebugString();
 }

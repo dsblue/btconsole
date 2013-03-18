@@ -23,6 +23,33 @@
                 android:textOn="@string/stop_string" />
         </TableRow>
 
+        <TableRow>
+
+            <Button
+                android:id="@+id/info_button"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="clickInfo"
+                android:text="@string/info_string" />
+
+            <Button
+                android:id="@+id/status_button"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="clickStatus"
+                android:text="@string/status_string" />
+
+            <Button
+                android:id="@+id/debug_button"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="clickDebug"
+                android:text="@string/debug_string" />
+        </TableRow>
+
         <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="match_parent"

@@ -28,10 +28,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.btconsole.ConfigureActivity"
-            android:label="@string/title_activity_configure" >
-        </activity>
-        <activity
             android:name="com.example.btconsole.ControlActivity"
             android:label="@string/title_activity_control" >
         </activity>
