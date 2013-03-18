@@ -82,7 +82,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="100"
-            android:textIsSelectable="true" />
+            android:textIsSelectable="true"
+            android:typeface="monospace"
+            android:gravity="bottom" />
     </ScrollView>
 
 </LinearLayout>

@@ -179,9 +179,7 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 				 * Update the log window on the control view
 				 */
 				TextView log = (TextView) findViewById(R.id.logView);
-				// TODO: Is there a more efficient way to do this?
-				log.append(new String(buffer, "UTF-8").substring(0, len));
-
+				
 				/*
 				 * If there is an open TCP IP connection to a remote client, then pass the raw data along
 				 */
@@ -190,8 +188,22 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 					TCPIPServer.getInstance(controlActivityHandler, TCPIP_PORT).send(buffer,len);
 				}
 
+				/* Workaround to convert CR characters to NL characters so that the TextView will display the 
+				 * new lines.
+				 * 
+				 * This should be done AFTER the data has been passed to the TCP/IP connection
+				 */
+				for (int i=0;i<len;i++) {
+					if (buffer[i] == 13)
+						buffer[i] = 10;
+				}
+				
+				String str = new String(buffer,0,len,"UTF-8");
+
+				log.append(str);
+				// Log.d("BT",str);
+				
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else if (msg.what == TCPIP_DATA_READ) {

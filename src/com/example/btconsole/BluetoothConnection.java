@@ -163,6 +163,9 @@ public class BluetoothConnection extends SerialConnection {
 	}
 
 	private void writeString(String str){
+		if (connected == null)
+			return;
+		
 		try {
 			connected.write(str.getBytes("UTF-8"),str.getBytes("UTF-8").length);
 		} catch (UnsupportedEncodingException e) {
@@ -171,6 +174,9 @@ public class BluetoothConnection extends SerialConnection {
 	
 	@Override
 	public void write(byte [] bytes, int len) {
+		if (connected == null)
+			return;
+		
 		connected.write(bytes, len);
 	}
 	
