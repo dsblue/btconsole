@@ -1,111 +1,81 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rl_complete_string_end"
+    android:id="@+id/control_layout1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".ControlFragment" >
 
-    <TableLayout
-        android:id="@+id/table1"
+    <ToggleButton
+        android:id="@+id/start_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:shrinkColumns="1" >
+        android:onClick="clickStart"
+        android:textOff="@string/start_string"
+        android:textOn="@string/stop_string" />
 
-        <TableRow>
+    <LinearLayout
+        android:id="@+id/control_layout2"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-            <ToggleButton
-                android:id="@+id/start_button"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="clickStart"
-                android:textOff="@string/start_string"
-                android:textOn="@string/stop_string" />
-        </TableRow>
+        <Button
+            android:id="@+id/info_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="clickInfo"
+            android:text="@string/info_string" />
 
-        <TableRow>
+        <Button
+            android:id="@+id/status_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="clickStatus"
+            android:text="@string/status_string" />
 
-            <Button
-                android:id="@+id/info_button"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="clickInfo"
-                android:text="@string/info_string" />
+        <Button
+            android:id="@+id/debug_button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="clickDebug"
+            android:text="@string/debug_string" />
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/status_button"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="clickStatus"
-                android:text="@string/status_string" />
+    <LinearLayout
+        android:id="@+id/control_layout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-            <Button
-                android:id="@+id/debug_button"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="clickDebug"
-                android:text="@string/debug_string" />
-        </TableRow>
+        <ToggleButton
+            android:id="@+id/ipserver_button"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="clickStartIPServer"
+            android:textOff="@string/startipserver_string"
+            android:textOn="@string/stopipserver_string" />
 
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dip" >
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/collectdata" />
-
-            <CheckBox
-                android:id="@+id/dataCollect"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dip" >
-
-            <ToggleButton
-                android:id="@+id/ipserver_button"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="clickStartIPServer"
-                android:textOff="@string/startipserver_string"
-                android:textOn="@string/stopipserver_string" />
-
-            <TextView
-                android:id="@+id/ipaddress"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textIsSelectable="true" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dip" >
-        </TableRow>
-    </TableLayout>
+        <TextView
+            android:id="@+id/ipaddress"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textIsSelectable="true" />
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/ScrollView01"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/table1" >
+        android:layout_height="match_parent" >
 
         <TextView
             android:id="@+id/logView"
@@ -115,4 +85,4 @@
             android:textIsSelectable="true" />
     </ScrollView>
 
-</RelativeLayout>
+</LinearLayout>

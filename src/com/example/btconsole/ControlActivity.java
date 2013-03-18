@@ -100,6 +100,7 @@ implements OnControlFragmentInteractionListener, Handler.Callback{
 			ex.printStackTrace();
 		}
 
+		ipString += " Port: " + String.valueOf(TCPIP_PORT);
 		return ipString;
 	}
 
