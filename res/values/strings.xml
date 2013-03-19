@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">btconsole</string>
+    <string name="title_app">Connected Devices</string>
     <string name="action_settings">Settings</string>
     <string name="new_connection">New Connection</string>
 
@@ -19,6 +20,7 @@
     <string name="fwupdate_string">Update Firmware</string>
     <string name="apply_string">Apply Changes</string>
     <string name="data_string">Collect Data</string>
+    <string name="tcpip_unconnected_string">Not Serving Data</string>
     <string name="log_string">Log</string>
     <string name="collectdata">Collect Data</string>
     <string name="startipserver_string">Start TCP/IP Server</string>

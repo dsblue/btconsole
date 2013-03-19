@@ -45,6 +45,7 @@ public class DeviceListFragment extends ListFragment {
 		
 		setListAdapter(mAdapter);
 		
+		setRetainInstance(true);
 	}	
 
 	@Override
@@ -102,14 +103,19 @@ public class DeviceListFragment extends ListFragment {
 			// Notify the active callbacks interface (the activity, if the
 			// fragment is attached to one) that an item has been selected.
 			mListener.onSelectDevice(
-					"BT", 
+					mConnections.get(position).getType(),
 					mConnections.get(position).getName(), 
 					mConnections.get(position).getAddress());
 		}
 	}
 	
-	public void addConnection(String name, String address) {
-		mConnections.add(new BluetoothConnection(name, address));
+	public void addConnection(String type, String name, String address) {
+		
+		if (type.equals("BT"))
+			mConnections.add(new BluetoothConnection(name, address));
+		else if (type.equals("USB"))
+			mConnections.add(new USBConnection(name, address));
+		
 		mAdapter.notifyDataSetChanged();
 	}
 	

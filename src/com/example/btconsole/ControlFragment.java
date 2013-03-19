@@ -97,7 +97,7 @@ public class ControlFragment extends Fragment {
 				TCPIPServer.getInstance(((ControlActivity)getActivity()).controlActivityHandler, TCPIP_PORT);
 			} else {
 				TCPIPServer.getInstance(((ControlActivity)getActivity()).controlActivityHandler, TCPIP_PORT).close();
-				ipaddress.setText("Not Serving Data");
+				ipaddress.setText(R.string.tcpip_unconnected_string);
 			}				
 		}
 	}
@@ -186,6 +186,9 @@ public class ControlFragment extends Fragment {
 			connection.connect();
 		} 
 
+		if (connection != null)
+			connection.connect();
+		
 		setRetainInstance(true);
 	}
 	

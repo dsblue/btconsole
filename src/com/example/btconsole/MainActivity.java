@@ -54,36 +54,24 @@ public class MainActivity extends Activity
 
 	@Override
 	public void onSelectDevice(String type, String name, String address) {
-		//DeviceListFragment fragment = (DeviceListFragment)
-        //        getFragmentManager().findFragmentById(R.id.fragment_container);
-		
 		Intent intent = new Intent(this, ControlActivity.class);
 		intent.putExtra("type", type);
 		intent.putExtra("name", name);
 		intent.putExtra("address", address);
 	    startActivity(intent);
-
 	}
 	
 	public void addConnection(View v){		
-	     DeviceListFragment fragment = (DeviceListFragment)
-	                getFragmentManager().findFragmentById(R.id.fragment_container);
-	     
-	     showDeviceListDialog();
-	}
-
-    public void showDeviceListDialog() {
         // Create an instance of the dialog fragment and show it
         DialogFragment dialog = new AddDeviceDialogFragment();
         dialog.show(getFragmentManager(), "deviceListDialog");
-    }
+	}
 
     @Override
     public void onAddDevicePositiveClick(DialogFragment dialog, SerialConnection connection) {
 
-    	// connection.connect();
     	DeviceListFragment fragment = (DeviceListFragment) getFragmentManager().findFragmentById(R.id.fragment_container);
-    	fragment.addConnection(connection.getName(), connection.getAddress());
+    	fragment.addConnection(connection.getType(),connection.getName(), connection.getAddress());
     	
     }	
 

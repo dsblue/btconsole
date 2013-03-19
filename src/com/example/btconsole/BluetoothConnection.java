@@ -32,6 +32,7 @@ public class BluetoothConnection extends SerialConnection {
 
 	BluetoothConnection(String name, String address){
 		super(null, name, address);
+		type = "BT";
 	}
 
 	@Override
@@ -51,8 +52,12 @@ public class BluetoothConnection extends SerialConnection {
 
 	@Override
 	public void disconnect() {
+		if (connected != null)
+			connected.cancel();
+		
 		if (connectThread != null)
 			connectThread.cancel();
+
 	}
 
 	private class ConnectThread extends Thread {

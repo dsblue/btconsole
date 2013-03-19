@@ -4,6 +4,7 @@ public class USBConnection extends SerialConnection {
 
 	USBConnection(String name, String address) {
 		super(null, name, address);
+		type = "USB";
 	}
 
 	@Override
