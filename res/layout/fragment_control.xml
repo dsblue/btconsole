@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/control_layout1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ControlFragment" >
 
@@ -10,7 +10,7 @@
         android:id="@+id/start_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="clickStart"
+        android:onClick="onClickButton"
         android:textOff="@string/start_string"
         android:textOn="@string/stop_string" />
 
@@ -27,7 +27,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="clickInfo"
+            android:onClick="onClickButton"
             android:text="@string/info_string" />
 
         <Button
@@ -36,7 +36,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="clickStatus"
+            android:onClick="onClickButton"
             android:text="@string/status_string" />
 
         <Button
@@ -45,7 +45,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="clickDebug"
+            android:onClick="onClickButton"
             android:text="@string/debug_string" />
     </LinearLayout>
 
@@ -60,7 +60,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="clickStartIPServer"
+            android:onClick="onClickButton"
             android:textOff="@string/startipserver_string"
             android:textOn="@string/stopipserver_string" />
 
@@ -75,7 +75,8 @@
     <ScrollView
         android:id="@+id/ScrollView01"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
         android:background="@drawable/back"
         android:paddingBottom="@dimen/small_vertical_margin"
         android:paddingLeft="@dimen/small_horizontal_margin"
