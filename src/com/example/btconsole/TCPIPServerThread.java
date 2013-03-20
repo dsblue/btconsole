@@ -42,7 +42,8 @@ public class TCPIPServerThread extends Thread {
 				// Read from the InputStream
 				bytes = sock.getInputStream().read(buffer);
 				// Send the obtained bytes to the UI activity
-				parent.obtainMessage(TCPIP_DATA_READ, bytes, -1, buffer.clone()).sendToTarget();
+				if (bytes > 0)
+					parent.obtainMessage(TCPIP_DATA_READ, bytes, -1, buffer.clone()).sendToTarget();
 			}
 
 		} catch (SocketException e) {

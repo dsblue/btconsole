@@ -141,7 +141,8 @@ public class BluetoothConnection extends SerialConnection {
 					// Read from the InputStream
 					bytes = mmInStream.read(buffer);
 					// Send the obtained bytes to the UI activity
-					parentThread.obtainMessage(BT_DATA_READ, bytes, -1, buffer.clone()).sendToTarget();
+					if (bytes > 0) 
+						parentThread.obtainMessage(BT_DATA_READ, bytes, -1, buffer.clone()).sendToTarget();
 				} catch (IOException e) {
 					break;
 				}
